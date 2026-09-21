@@ -1,5 +1,6 @@
 package org.example.projectpetregister.controllers;
 
+import jakarta.validation.Valid;
 import org.example.projectpetregister.entities.Pet;
 import org.example.projectpetregister.entities.dtos.PetUpdateDTO;
 import org.example.projectpetregister.services.PetService;
@@ -45,7 +46,7 @@ public class PetController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> putPet(@PathVariable UUID id, @RequestBody PetUpdateDTO dto) {
+    public ResponseEntity<Void> putPet(@PathVariable UUID id, @RequestBody @Valid PetUpdateDTO dto) {
         petService.updatePet(id, dto);
         return ResponseEntity.noContent().build();
     }

@@ -1,9 +1,6 @@
 package org.example.projectpetregister.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.example.projectpetregister.entities.enums.Sex;
 import org.example.projectpetregister.entities.enums.Type;
 
@@ -18,21 +15,27 @@ public class Pet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private String name;
     private String lastName;
+
+    @Enumerated(EnumType.STRING)
     private Type type;
+
+    @Enumerated(EnumType.STRING)
     private Sex sex;
+
     private Integer homeNumber;
     private String city;
     private String address;
-    private Integer age;
+    private Double age;
     private Double weight;
     private String breed;
 
     public Pet() {
     }
 
-    public Pet(String name, String lastName, Type type, Sex sex, Integer homeNumber, String city, String address, Integer age, Double weight, String breed) {
+    public Pet(String name, String lastName, Type type, Sex sex, Integer homeNumber, String city, String address, Double age, Double weight, String breed) {
         this.name = name;
         this.lastName = lastName;
         this.type = type;
@@ -53,11 +56,11 @@ public class Pet implements Serializable {
         this.address = address;
     }
 
-    public Integer getAge() {
+    public Double getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(Double age) {
         this.age = age;
     }
 
