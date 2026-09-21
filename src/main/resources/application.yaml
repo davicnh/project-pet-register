@@ -1,0 +1,17 @@
+spring:
+
+  application:
+    name: project-pet-register
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pet_db
+    username: postgres
+    password: 2552
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8086
