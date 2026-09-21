@@ -2,6 +2,7 @@ package org.example.projectpetregister.services;
 
 import jakarta.transaction.Transactional;
 import org.example.projectpetregister.entities.Pet;
+import org.example.projectpetregister.entities.dtos.PetCreateDTO;
 import org.example.projectpetregister.entities.dtos.PetUpdateDTO;
 import org.example.projectpetregister.repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
-    public Pet savePet(Pet pet) {
-        return petRepository.save(pet);
+    public Pet savePet(PetCreateDTO dto) {
+        dto.name()
     }
 
     public List<Pet> findAllPets() {

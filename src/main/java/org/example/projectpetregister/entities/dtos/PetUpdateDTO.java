@@ -24,7 +24,6 @@ public record PetUpdateDTO(
 
         Integer homeNumber,
 
-        @NotBlank
         @Pattern(regexp = "^[\\p{L}]+(?:[ -][\\p{L}]+)*$")
         String city,
 

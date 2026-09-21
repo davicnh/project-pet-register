@@ -2,6 +2,7 @@ package org.example.projectpetregister.controllers;
 
 import jakarta.validation.Valid;
 import org.example.projectpetregister.entities.Pet;
+import org.example.projectpetregister.entities.dtos.PetCreateDTO;
 import org.example.projectpetregister.entities.dtos.PetUpdateDTO;
 import org.example.projectpetregister.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class PetController {
 
 
     @PostMapping
-    public ResponseEntity<Pet> postPet(@RequestBody Pet pet) {
-        Pet savingPet = petService.savePet(pet);
+    public ResponseEntity<Pet> postPet(@RequestBody @Valid PetCreateDTO dto) {
+        Pet savingPet = petService.savePet(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savingPet);
     }
 
