@@ -25,14 +25,14 @@ public class Pet implements Serializable {
     private Integer homeNumber;
     private String city;
     private String address;
-    private Double age;
+    private Integer age;
     private Double weight;
     private String breed;
 
     public Pet() {
     }
 
-    public Pet(String name, String lastName, Type type, Sex sex, Integer homeNumber, String city, String address, Double age, Double weight, String breed) {
+    public Pet(String name, String lastName, Type type, Sex sex, Integer homeNumber, String city, String address, Integer age, Double weight, String breed) {
         this.name = name;
         this.lastName = lastName;
         this.type = type;
@@ -53,11 +53,11 @@ public class Pet implements Serializable {
         this.address = address;
     }
 
-    public Double getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(Double age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
