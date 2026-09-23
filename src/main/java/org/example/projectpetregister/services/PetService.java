@@ -18,7 +18,21 @@ public class PetService {
     private PetRepository petRepository;
 
     public Pet savePet(PetCreateDTO dto) {
-        dto.name()
+
+        Pet pet = new Pet();
+        pet.setName(dto.name());
+        pet.setLastName(dto.lastName());
+        pet.setType(dto.type());
+        pet.setSex(dto.sex());
+        pet.setHomeNumber(dto.homeNumber());
+        pet.setCity(dto.city());
+        pet.setAddress(dto.address());
+        pet.setAge(dto.age());
+        pet.setWeight(dto.weight());
+        pet.setBreed(dto.breed());
+
+        Pet savePet = petRepository.save(pet);
+        return savePet;
     }
 
     public List<Pet> findAllPets() {
