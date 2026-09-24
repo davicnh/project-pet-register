@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.projectpetregister.entities.Pet;
 import org.example.projectpetregister.entities.dtos.PetCreateDTO;
 import org.example.projectpetregister.entities.dtos.PetUpdateDTO;
+import org.example.projectpetregister.exceptions.ResourceNotFoundException;
 import org.example.projectpetregister.repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class PetService {
 
     public Pet findPetById(UUID id) {
         if (!petRepository.existsById(id)) {
-            throw new RuntimeException("Pet não encontrado");
+            throw new ResourceNotFoundException("Pet não encontrado");
         }
         return petRepository.findById(id).get();
     }
