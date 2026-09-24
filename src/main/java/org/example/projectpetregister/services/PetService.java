@@ -47,7 +47,7 @@ public class PetService {
     public void deletePet(UUID id) {
 
         if (!petRepository.existsById(id)) {
-            throw new RuntimeException("Pet não encontrado");
+            throw new ResourceNotFoundException("Pet não encontrado");
         }
 
         petRepository.deleteById(id);
@@ -63,7 +63,7 @@ public class PetService {
     @Transactional
     public void updatePet(UUID id, PetUpdateDTO dto) {
 
-        Pet pet = petRepository.findById(id).orElseThrow(() -> new RuntimeException("Pet não encontrado"));
+        Pet pet = petRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pet não encontrado"));
 
         pet.setName(dto.firstName());
         pet.setLastName(dto.lastName());
@@ -77,46 +77,72 @@ public class PetService {
     }
 
     public List<Pet> findPets(PetSearchDTO dto) {
-        Specification<Pet> spec = Specification.where((Specification<Pet>) null);
+        Specification<Pet> spec = null;
 
         int criteriaCont = 0;
 
         if (dto.name() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.nameContains(dto.name()));
+            spec = spec == null
+                    ? PetSpecification.nameContains(dto.name())
+                    : spec.and(PetSpecification.nameContains(dto.name()));
         }
+
         if (dto.breed() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.breedContains(dto.breed()));
+            spec = spec == null
+                    ? PetSpecification.breedContains(dto.breed())
+                    : spec.and(PetSpecification.breedContains(dto.breed()));
         }
+
         if (dto.city() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.cityContains(dto.city()));
+            spec = spec == null
+                    ? PetSpecification.cityContains(dto.city())
+                    : spec.and(PetSpecification.cityContains(dto.city()));
         }
+
         if (dto.address() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.addressContains(dto.address()));
+            spec = spec == null
+                    ? PetSpecification.addressContains(dto.address())
+                    : spec.and(PetSpecification.addressContains(dto.address()));
         }
+
         if (dto.age() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.ageEquals(dto.age()));
+            spec = spec == null
+                    ? PetSpecification.ageEquals(dto.age())
+                    : spec.and(PetSpecification.ageEquals(dto.age()));
         }
+
         if (dto.weight() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.weightEquals(dto.weight()));
+            spec = spec == null
+                    ? PetSpecification.weightEquals(dto.weight())
+                    : spec.and(PetSpecification.weightEquals(dto.weight()));
         }
+
         if (dto.type() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.typeEquals(dto.type()));
+            spec = spec == null
+                    ? PetSpecification.typeEquals(dto.type())
+                    : spec.and(PetSpecification.typeEquals(dto.type()));
         }
+
         if (dto.sex() != null) {
             criteriaCont++;
-            spec = spec.and(PetSpecification.sexEquals(dto.sex()));
+            spec = spec == null
+                    ? PetSpecification.sexEquals(dto.sex())
+                    : spec.and(PetSpecification.sexEquals(dto.sex()));
         }
 
         if (criteriaCont > 2) {
             throw new InvalidSearchException("Número de critérios maior que o permitido.");
         }
-        return petRepository.findAll(spec);
+
+        return spec == null
+                ? petRepository.findAll()
+                : petRepository.findAll(spec);
     }
 }
