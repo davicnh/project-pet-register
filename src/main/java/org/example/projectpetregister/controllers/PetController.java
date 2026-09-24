@@ -3,6 +3,7 @@ package org.example.projectpetregister.controllers;
 import jakarta.validation.Valid;
 import org.example.projectpetregister.entities.Pet;
 import org.example.projectpetregister.entities.dtos.PetCreateDTO;
+import org.example.projectpetregister.entities.dtos.PetSearchDTO;
 import org.example.projectpetregister.entities.dtos.PetUpdateDTO;
 import org.example.projectpetregister.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,14 @@ public class PetController {
     public ResponseEntity<Void> deletePet(@PathVariable UUID id) {
         petService.deletePet(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Pet>> findPetsByParams(@ModelAttribute PetSearchDTO dto) {
+        List<Pet> pets = petService.findPets(dto);
+        if (pets.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(pets);
     }
 }

@@ -29,5 +29,12 @@ public class GlobalExceptionHandler {
         errors.put("resource", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
+
+    @ExceptionHandler(InvalidSearchException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidSearchException(InvalidSearchException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("search", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
 }
 

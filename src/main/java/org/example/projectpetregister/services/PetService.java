@@ -3,10 +3,14 @@ package org.example.projectpetregister.services;
 import jakarta.transaction.Transactional;
 import org.example.projectpetregister.entities.Pet;
 import org.example.projectpetregister.entities.dtos.PetCreateDTO;
+import org.example.projectpetregister.entities.dtos.PetSearchDTO;
 import org.example.projectpetregister.entities.dtos.PetUpdateDTO;
+import org.example.projectpetregister.exceptions.InvalidSearchException;
 import org.example.projectpetregister.exceptions.ResourceNotFoundException;
 import org.example.projectpetregister.repositories.PetRepository;
+import org.example.projectpetregister.specification.PetSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,5 +74,49 @@ public class PetService {
         pet.setAge(dto.age());
 
         petRepository.save(pet);
+    }
+
+    public List<Pet> findPets(PetSearchDTO dto) {
+        Specification<Pet> spec = Specification.where((Specification<Pet>) null);
+
+        int criteriaCont = 0;
+
+        if (dto.name() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.nameContains(dto.name()));
+        }
+        if (dto.breed() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.breedContains(dto.breed()));
+        }
+        if (dto.city() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.cityContains(dto.city()));
+        }
+        if (dto.address() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.addressContains(dto.address()));
+        }
+        if (dto.age() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.ageEquals(dto.age()));
+        }
+        if (dto.weight() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.weightEquals(dto.weight()));
+        }
+        if (dto.type() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.typeEquals(dto.type()));
+        }
+        if (dto.sex() != null) {
+            criteriaCont++;
+            spec = spec.and(PetSpecification.sexEquals(dto.sex()));
+        }
+
+        if (criteriaCont > 2) {
+            throw new InvalidSearchException("Número de critérios maior que o permitido.");
+        }
+        return petRepository.findAll(spec);
     }
 }
